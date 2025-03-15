@@ -107,6 +107,7 @@ class Translator:
                 0x0409: 'en',      # English
                 0x0404: 'zh_tw',   # Traditional Chinese
                 0x0804: 'zh_cn',   # Simplified Chinese
+                0x0422: 'vi',      # Vietnamese
             }
             
             return language_map.get(layout_id, 'en')
@@ -130,14 +131,20 @@ class Translator:
                 return 'zh_cn'
             elif system_locale.startswith('en'):
                 return 'en'
+            elif system_locale.startswith('vi'):
+                return 'vi'
             
+
             # Try to get language from LANG environment variable as fallback
             env_lang = os.getenv('LANG', '').lower()
             if 'tw' in env_lang or 'hk' in env_lang:
                 return 'zh_tw'
             elif 'cn' in env_lang:
                 return 'zh_cn'
+            elif 'vi' in env_lang:
+                return 'vi'
             
+
             return 'en'
         except:
             return 'en'
@@ -206,17 +213,21 @@ class Translator:
 translator = Translator()
 
 def print_menu():
-    """打印菜单选项"""
+    """Print menu options"""
     print(f"\n{Fore.CYAN}{EMOJI['MENU']} {translator.get('menu.title')}:{Style.RESET_ALL}")
     print(f"{Fore.YELLOW}{'─' * 40}{Style.RESET_ALL}")
     print(f"{Fore.GREEN}0{Style.RESET_ALL}. {EMOJI['ERROR']} {translator.get('menu.exit')}")
     print(f"{Fore.GREEN}1{Style.RESET_ALL}. {EMOJI['RESET']} {translator.get('menu.reset')}")
     print(f"{Fore.GREEN}2{Style.RESET_ALL}. {EMOJI['SUCCESS']} {translator.get('menu.register')}")
-    print(f"{Fore.GREEN}3{Style.RESET_ALL}. {EMOJI['SUCCESS']} {translator.get('menu.register_manual')}")
-    print(f"{Fore.GREEN}4{Style.RESET_ALL}. {EMOJI['ERROR']} {translator.get('menu.quit')}")
-    print(f"{Fore.GREEN}5{Style.RESET_ALL}. {EMOJI['LANG']} {translator.get('menu.select_language')}")
-    print(f"{Fore.GREEN}6{Style.RESET_ALL}. {EMOJI['UPDATE']} {translator.get('menu.disable_auto_update')}")
-    print(f"{Fore.GREEN}7{Style.RESET_ALL}. {EMOJI['SUCCESS']} {translator.get('menu.auto_register', default='自动循环注册 Cursor 账号')}")
+    print(f"{Fore.GREEN}3{Style.RESET_ALL}. 🌟 {translator.get('menu.register_google')}")
+    print(f"{Fore.YELLOW}   ┗━━ 🔥 LIFETIME ACCESS ENABLED 🔥{Style.RESET_ALL}")
+    print(f"{Fore.GREEN}4{Style.RESET_ALL}. ⭐ {translator.get('menu.register_github')}")
+    print(f"{Fore.YELLOW}   ┗━━ 🚀 LIFETIME ACCESS ENABLED 🚀{Style.RESET_ALL}")
+    print(f"{Fore.GREEN}5{Style.RESET_ALL}. {EMOJI['SUCCESS']} {translator.get('menu.register_manual')}")
+    print(f"{Fore.GREEN}6{Style.RESET_ALL}. {EMOJI['ERROR']} {translator.get('menu.quit')}")
+    print(f"{Fore.GREEN}7{Style.RESET_ALL}. {EMOJI['LANG']} {translator.get('menu.select_language')}")
+    print(f"{Fore.GREEN}8{Style.RESET_ALL}. {EMOJI['UPDATE']} {translator.get('menu.disable_auto_update')}")
+    print(f"{Fore.GREEN}9{Style.RESET_ALL}. {EMOJI['SUCCESS']} {translator.get('menu.auto_register', default='自动循环注册 Cursor 账号')}")
     print(f"{Fore.YELLOW}{'─' * 40}{Style.RESET_ALL}")
 
 def select_language():
@@ -352,7 +363,7 @@ def main():
     
     while True:
         try:
-            choice = input(f"\n{EMOJI['ARROW']} {Fore.CYAN}{translator.get('menu.input_choice', choices='0-7')}: {Style.RESET_ALL}")
+            choice = input(f"\n{EMOJI['ARROW']} {Fore.CYAN}{translator.get('menu.input_choice', choices='0-')}: {Style.RESET_ALL}")
 
             if choice == "0":
                 print(f"\n{Fore.YELLOW}{EMOJI['INFO']} {translator.get('menu.exit')}...{Style.RESET_ALL}")
@@ -367,22 +378,30 @@ def main():
                 cursor_register.main(translator, auto_mode=False)  # 单次运行使用非自动模式
                 print_menu()
             elif choice == "3":
+                import cursor_register_google
+                cursor_register_google.main(translator)
+                print_menu()
+            elif choice == "4":
+                import cursor_register_github
+                cursor_register_github.main(translator)
+                print_menu()
+            elif choice == "5":
                 import cursor_register_manual
                 cursor_register_manual.main(translator, auto_mode=False)  # 单次运行使用非自动模式
                 print_menu()
-            elif choice == "4":
+            elif choice == "6":
                 import quit_cursor
                 quit_cursor.quit_cursor(translator)
                 print_menu()
-            elif choice == "5":
+            elif choice == "7":
                 if select_language():
                     print_menu()
                 continue
-            elif choice == "6":
+            elif choice == "8":
                 import disable_auto_update
                 disable_auto_update.run(translator)
                 print_menu()
-            elif choice == "7":
+            elif choice == "9":
                 # 无限循环执行注册操作
                 import cursor_register
                 try:

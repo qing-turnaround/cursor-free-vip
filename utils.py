@@ -1,6 +1,7 @@
 import os
 import sys
 import platform
+import random
 
 def get_user_documents_path():
     """Get user documents path"""
@@ -29,4 +30,40 @@ def get_linux_cursor_path():
     ]
     
     # return the first path that exists
-    return next((path for path in possible_paths if os.path.exists(path)), possible_paths[0]) 
+    return next((path for path in possible_paths if os.path.exists(path)), possible_paths[0])
+
+def get_random_wait_time(config, timing_key):
+    """Get random wait time based on configuration timing settings
+    
+    Args:
+        config (dict): Configuration dictionary containing timing settings
+        timing_key (str): Key to look up in the timing settings
+        
+    Returns:
+        float: Random wait time in seconds
+    """
+    try:
+        # Get timing value from config
+        timing = config.get('Timing', {}).get(timing_key)
+        if not timing:
+            # Default to 0.5-1.5 seconds if timing not found
+            return random.uniform(0.5, 1.5)
+            
+        # Check if timing is a range (e.g., "0.5-1.5" or "0.5,1.5")
+        if isinstance(timing, str):
+            if '-' in timing:
+                min_time, max_time = map(float, timing.split('-'))
+            elif ',' in timing:
+                min_time, max_time = map(float, timing.split(','))
+            else:
+                # Single value, use it as both min and max
+                min_time = max_time = float(timing)
+        else:
+            # If timing is a number, use it as both min and max
+            min_time = max_time = float(timing)
+            
+        return random.uniform(min_time, max_time)
+        
+    except (ValueError, TypeError, AttributeError):
+        # Return default value if any error occurs
+        return random.uniform(0.5, 1.5) 

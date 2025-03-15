@@ -39,14 +39,17 @@ get_downloads_dir() {
 # Get latest version
 get_latest_version() {
     echo -e "${CYAN}ℹ️ Checking latest version...${NC}"
-    local latest_release
-    latest_release=$(curl -s https://api.github.com/repos/yeongpin/cursor-free-vip/releases/latest)
-    if [ $? -ne 0 ]; then
+    latest_release=$(curl -s https://api.github.com/repos/yeongpin/cursor-free-vip/releases/latest) || {
         echo -e "${RED}❌ Cannot get latest version information${NC}"
         exit 1
-    fi
+    }
     
     VERSION=$(echo "$latest_release" | grep -o '"tag_name": ".*"' | cut -d'"' -f4 | tr -d 'v')
+    if [ -z "$VERSION" ]; then
+        echo -e "${RED}❌ Failed to parse version from GitHub API response:\n${latest_release}"
+        exit 1
+    fi
+
     echo -e "${GREEN}✅ Found latest version: ${VERSION}${NC}"
 }
 
@@ -170,9 +173,7 @@ install_cursor_free_vip() {
     fi
     
     echo -e "${CYAN}ℹ️ Setting executable permissions...${NC}"
-    chmod +x "${binary_path}"
-    
-    if [ $? -eq 0 ]; then
+    if chmod +x "${binary_path}"; then
         echo -e "${GREEN}✅ Installation completed!${NC}"
         echo -e "${CYAN}ℹ️ Program downloaded to: ${binary_path}${NC}"
         echo -e "${CYAN}ℹ️ Starting program...${NC}"
