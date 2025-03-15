@@ -15,7 +15,7 @@ class NewTempEmail:
         self.translator = translator
         # Randomly choose between mail.tm and mail.gw
         self.services = [
-            {"name": "mail.tm", "api_url": "https://api.mail.tm"},
+            # {"name": "mail.tm", "api_url": "https://api.mail.tm"},
             {"name": "mail.gw", "api_url": "https://api.mail.gw"}
         ]
         self.selected_service = random.choice(self.services)

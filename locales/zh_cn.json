@@ -12,7 +12,13 @@
         "program_terminated": "程序已被用户终止",
         "error_occurred": "发生错误：{error}，请重试",
         "press_enter": "按回车键退出",
-        "disable_auto_update": "禁用 Cursor 自动更新"
+        "disable_auto_update": "禁用 Cursor 自动更新",
+        "auto_register": "自动循环注册 Cursor 账号",
+        "auto_register_start": "开始自动循环注册 Cursor 账号",
+        "auto_register_tip": "按 Ctrl+C 停止循环注册",
+        "auto_register_count": "第 {count} 次注册",
+        "auto_register_completed": "第 {count} 次注册完成",
+        "auto_register_stopped": "自动循环注册已停止"
     },
     "languages": {
         "en": "English",

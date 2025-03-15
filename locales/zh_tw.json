@@ -12,7 +12,13 @@
         "program_terminated": "程式已被使用者終止",
         "error_occurred": "發生錯誤：{error}，請重試",
         "press_enter": "按返回鍵退出",
-        "disable_auto_update": "停用 Cursor 自動更新"
+        "disable_auto_update": "停用 Cursor 自動更新",
+        "auto_register": "自動循環註冊 Cursor 帳號",
+        "auto_register_start": "開始自動循環註冊 Cursor 帳號",
+        "auto_register_tip": "按 Ctrl+C 停止循環註冊",
+        "auto_register_count": "第 {count} 次註冊",
+        "auto_register_completed": "第 {count} 次註冊完成",
+        "auto_register_stopped": "自動循環註冊已停止"
     },
     "languages": {
         "en": "English",

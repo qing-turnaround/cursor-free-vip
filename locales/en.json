@@ -12,7 +12,13 @@
         "program_terminated": "Program was terminated by user",
         "error_occurred": "An error occurred: {error}. Please try again",
         "press_enter": "Press Enter to Exit",
-        "disable_auto_update": "Disable Cursor Auto-Update"
+        "disable_auto_update": "Disable Cursor Auto-Update",
+        "auto_register": "Auto Register Cursor Accounts in Loop",
+        "auto_register_start": "Starting Auto Registration Loop",
+        "auto_register_tip": "Press Ctrl+C to Stop the Loop",
+        "auto_register_count": "Registration #{count}",
+        "auto_register_completed": "Registration #{count} Completed",
+        "auto_register_stopped": "Auto Registration Loop Stopped"
     },
     "languages": {
         "en": "English",

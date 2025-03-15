@@ -253,7 +253,7 @@ class CursorRegistration:
         auth_manager = CursorAuth(translator=self.translator)
         return auth_manager.update_auth(email, access_token, refresh_token)
 
-def main(translator=None):
+def main(translator=None, auto_mode=False):
     """Main function to be called from main.py"""
     print(f"\n{Fore.CYAN}{'='*50}{Style.RESET_ALL}")
     print(f"{Fore.CYAN}{EMOJI['START']} {translator.get('register.title')}{Style.RESET_ALL}")
@@ -263,7 +263,10 @@ def main(translator=None):
     registration.start()
 
     print(f"\n{Fore.CYAN}{'='*50}{Style.RESET_ALL}")
-    input(f"{EMOJI['INFO']} {translator.get('register.press_enter')}...")
+    
+    # 只有在非自动模式下才等待用户按回车键
+    if not auto_mode:
+        input(f"{EMOJI['INFO']} {translator.get('register.press_enter')}...")
 
 if __name__ == "__main__":
     from main import translator as main_translator
