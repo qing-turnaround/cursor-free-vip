@@ -21,7 +21,7 @@ Cursor's configuration.
 這是一個自動化工具，自動註冊，支持 Windows 和 macOS 系統，完成 Auth 驗證，重置 Cursor 的配置。
 
 <p align="center">
-  <img src="./images/new_2025-02-27_10-42-44.png" alt="new" width="400" style="border-radius: 6px;"/><br>
+  <img src="./images/new_2025-03-19_00-19-09.png" alt="new" width="400" style="border-radius: 6px;"/><br>
 </p>
 
 ##### If you don't have Google Chrome, you can download it from [here](https://www.google.com/intl/en_pk/chrome/)

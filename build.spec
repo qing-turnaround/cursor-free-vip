@@ -33,7 +33,8 @@ a = Analysis(
         ('new_tempemail.py', '.'),
         ('quit_cursor.py', '.'),
         ('cursor_register_manual.py', '.'),
-        ('.env', '.')
+        ('.env', '.'),
+        ('block_domain.txt', '.')
     ],
     hiddenimports=[
         'cursor_auth',

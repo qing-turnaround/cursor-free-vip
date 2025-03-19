@@ -133,6 +133,13 @@ class Translator:
                 return 'en'
             elif system_locale.startswith('vi'):
                 return 'vi'
+            elif system_locale.startswith('nl'):
+                return 'nl'
+            elif system_locale.startswith('de'):
+                return 'de'
+            elif system_locale.startswith('fr'):
+                return 'fr'
+            
             
 
             # Try to get language from LANG environment variable as fallback
@@ -143,7 +150,12 @@ class Translator:
                 return 'zh_cn'
             elif 'vi' in env_lang:
                 return 'vi'
-            
+            elif 'nl' in env_lang:
+                return 'nl'
+            elif 'de' in env_lang:
+                return 'de'
+            elif 'fr' in env_lang:
+                return 'fr'
 
             return 'en'
         except:
@@ -220,14 +232,15 @@ def print_menu():
     print(f"{Fore.GREEN}1{Style.RESET_ALL}. {EMOJI['RESET']} {translator.get('menu.reset')}")
     print(f"{Fore.GREEN}2{Style.RESET_ALL}. {EMOJI['SUCCESS']} {translator.get('menu.register')}")
     print(f"{Fore.GREEN}3{Style.RESET_ALL}. 🌟 {translator.get('menu.register_google')}")
-    print(f"{Fore.YELLOW}   ┗━━ 🔥 LIFETIME ACCESS ENABLED 🔥{Style.RESET_ALL}")
+    print(f"{Fore.YELLOW}   ┗━━ 🔥 {translator.get('menu.lifetime_access_enabled')} 🔥{Style.RESET_ALL}")
     print(f"{Fore.GREEN}4{Style.RESET_ALL}. ⭐ {translator.get('menu.register_github')}")
-    print(f"{Fore.YELLOW}   ┗━━ 🚀 LIFETIME ACCESS ENABLED 🚀{Style.RESET_ALL}")
+    print(f"{Fore.YELLOW}   ┗━━ 🚀 {translator.get('menu.lifetime_access_enabled')} 🚀{Style.RESET_ALL}")
     print(f"{Fore.GREEN}5{Style.RESET_ALL}. {EMOJI['SUCCESS']} {translator.get('menu.register_manual')}")
     print(f"{Fore.GREEN}6{Style.RESET_ALL}. {EMOJI['ERROR']} {translator.get('menu.quit')}")
     print(f"{Fore.GREEN}7{Style.RESET_ALL}. {EMOJI['LANG']} {translator.get('menu.select_language')}")
     print(f"{Fore.GREEN}8{Style.RESET_ALL}. {EMOJI['UPDATE']} {translator.get('menu.disable_auto_update')}")
-    print(f"{Fore.GREEN}9{Style.RESET_ALL}. {EMOJI['SUCCESS']} {translator.get('menu.auto_register', default='自动循环注册 Cursor 账号')}")
+    print(f"{Fore.GREEN}9{Style.RESET_ALL}. {EMOJI['RESET']} {translator.get('menu.totally_reset')}")
+    print(f"{Fore.GREEN}10{Style.RESET_ALL}. {EMOJI['SUCCESS']} {translator.get('menu.auto_register', default='自动循环注册 Cursor 账号')}")
     print(f"{Fore.YELLOW}{'─' * 40}{Style.RESET_ALL}")
 
 def select_language():
@@ -282,8 +295,65 @@ def check_latest_version():
         if not latest_version:
             raise Exception("Invalid version format received")
         
-        if latest_version != version:
+        # Parse versions for proper comparison
+        def parse_version(version_str):
+            """Parse version string into tuple for proper comparison"""
+            try:
+                return tuple(map(int, version_str.split('.')))
+            except ValueError:
+                # Fallback to string comparison if parsing fails
+                return version_str
+                
+        current_version_tuple = parse_version(version)
+        latest_version_tuple = parse_version(latest_version)
+        
+        # Compare versions properly
+        is_newer_version_available = False
+        if isinstance(current_version_tuple, tuple) and isinstance(latest_version_tuple, tuple):
+            is_newer_version_available = current_version_tuple < latest_version_tuple
+        else:
+            # Fallback to string comparison
+            is_newer_version_available = version != latest_version
+        
+        if is_newer_version_available:
             print(f"\n{Fore.YELLOW}{EMOJI['INFO']} {translator.get('updater.new_version_available', current=version, latest=latest_version)}{Style.RESET_ALL}")
+            
+            # get and show changelog
+            try:
+                changelog_url = "https://raw.githubusercontent.com/yeongpin/cursor-free-vip/main/CHANGELOG.md"
+                changelog_response = requests.get(changelog_url, timeout=10)
+                
+                if changelog_response.status_code == 200:
+                    changelog_content = changelog_response.text
+                    
+                    # get latest version changelog
+                    latest_version_pattern = f"## v{latest_version}"
+                    changelog_sections = changelog_content.split("## v")
+                    
+                    latest_changes = None
+                    for section in changelog_sections:
+                        if section.startswith(latest_version):
+                            latest_changes = section
+                            break
+                    
+                    if latest_changes:
+                        print(f"\n{Fore.CYAN}{'─' * 40}{Style.RESET_ALL}")
+                        print(f"{Fore.CYAN}{translator.get('updater.changelog_title')}:{Style.RESET_ALL}")
+                        
+                        # show changelog content (max 10 lines)
+                        changes_lines = latest_changes.strip().split('\n')
+                        for i, line in enumerate(changes_lines[1:11]):  # skip version number line, max 10 lines
+                            if line.strip():
+                                print(f"{Fore.WHITE}{line.strip()}{Style.RESET_ALL}")
+                        
+                        # if changelog more than 10 lines, show ellipsis
+                        if len(changes_lines) > 11:
+                            print(f"{Fore.WHITE}...{Style.RESET_ALL}")
+                        
+                        print(f"{Fore.CYAN}{'─' * 40}{Style.RESET_ALL}")
+            except Exception as changelog_error:
+                # get changelog failed
+                pass
             
             # Ask user if they want to update
             while True:
@@ -329,7 +399,11 @@ def check_latest_version():
                 print(f"{Fore.YELLOW}{EMOJI['INFO']} {translator.get('updater.manual_update_required')}{Style.RESET_ALL}")
                 return
         else:
-            print(f"{Fore.GREEN}{EMOJI['SUCCESS']} {translator.get('updater.up_to_date')}{Style.RESET_ALL}")
+            # If current version is newer or equal to latest version
+            if current_version_tuple > latest_version_tuple:
+                print(f"{Fore.GREEN}{EMOJI['SUCCESS']} {translator.get('updater.development_version', current=version, latest=latest_version)}{Style.RESET_ALL}")
+            else:
+                print(f"{Fore.GREEN}{EMOJI['SUCCESS']} {translator.get('updater.up_to_date')}{Style.RESET_ALL}")
             
     except requests.exceptions.RequestException as e:
         print(f"{Fore.RED}{EMOJI['ERROR']} {translator.get('updater.network_error', error=str(e))}{Style.RESET_ALL}")
@@ -363,9 +437,28 @@ def main():
     
     while True:
         try:
-            choice = input(f"\n{EMOJI['ARROW']} {Fore.CYAN}{translator.get('menu.input_choice', choices='0-')}: {Style.RESET_ALL}")
+            choice = input(f"\n{EMOJI['ARROW']} {Fore.CYAN}{translator.get('menu.input_choice', choices='0-8')}: {Style.RESET_ALL}")
 
-            if choice == "0":
+            if choice == "-1":
+                # 无限循环执行注册操作
+                import cursor_register
+                try:
+                    print(f"\n{Fore.CYAN}{EMOJI['INFO']} {translator.get('menu.auto_register_start', default='开始自动循环注册 Cursor 账号')}{Style.RESET_ALL}")
+                    print(f"{Fore.YELLOW}{'─' * 40}{Style.RESET_ALL}")
+                    print(f"{Fore.YELLOW}{EMOJI['INFO']} {translator.get('menu.auto_register_tip', default='按 Ctrl+C 停止循环注册')}{Style.RESET_ALL}")
+                    
+                    count = 0
+                    while True:
+                        count += 1
+                        print(f"\n{Fore.CYAN}{EMOJI['INFO']} {translator.get('menu.auto_register_count', default='第 {count} 次注册', count=count)}{Style.RESET_ALL}")
+                        cursor_register.main(translator, auto_mode=True)  # 使用自动模式，跳过等待用户按回车键
+                        print(f"{Fore.GREEN}{EMOJI['SUCCESS']} {translator.get('menu.auto_register_completed', default='第 {count} 次注册完成', count=count)}{Style.RESET_ALL}")
+                        print(f"{Fore.YELLOW}{'─' * 40}{Style.RESET_ALL}")
+                except KeyboardInterrupt:
+                    print(f"\n{Fore.YELLOW}{EMOJI['INFO']} {translator.get('menu.auto_register_stopped', default='自动循环注册已停止')}{Style.RESET_ALL}")
+                finally:
+                    print_menu()
+            elif choice == "0":
                 print(f"\n{Fore.YELLOW}{EMOJI['INFO']} {translator.get('menu.exit')}...{Style.RESET_ALL}")
                 print(f"{Fore.CYAN}{'═' * 50}{Style.RESET_ALL}")
                 return
@@ -420,6 +513,10 @@ def main():
                     print(f"\n{Fore.YELLOW}{EMOJI['INFO']} {translator.get('menu.auto_register_stopped', default='自动循环注册已停止')}{Style.RESET_ALL}")
                 finally:
                     print_menu()
+            elif choice == "9":
+                import totally_reset_cursor
+                totally_reset_cursor.run(translator)
+                print_menu()
             else:
                 print(f"{Fore.RED}{EMOJI['ERROR']} {translator.get('menu.invalid_choice')}{Style.RESET_ALL}")
                 print_menu()

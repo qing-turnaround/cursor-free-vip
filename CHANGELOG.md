@@ -1,5 +1,30 @@
 # Change Log
 
+## v1.7.12
+1. Add: Changelog Show in Menu | 增加更新日志在菜單中
+2. Remake Create Mail Logic | 重做創建郵箱邏輯
+3. Fix: Some Issues | 修復一些問題
+
+## v1.7.11 ( Skip & Merge to v1.7.12 )
+1. Add: Multi-language Support | 增加多語言支持
+2. Add: German Language | 增加德語
+3. Add: Dutch Language | 增加荷蘭語
+4. Add: French Language | 增加法語
+5. Add: Auto Detect Max Use Count | 增加自動檢測最大使用次數
+6. Add: Detect & Auto Delete Account | 增加檢測 & 自動刪除賬號
+7. Add: Optimize Some Logic | 優化一些邏輯
+8. Add: Local Blocked Domains | 增加本地被屏蔽域名
+9. Fix : Get Verification Code for None | 修復獲取驗證碼為 None
+
+## v1.7.10
+1. Add: Totally Reset Cursor | 增加完全重置 Cursor
+2. Add: Multi-language Support for Totally Reset | 增加完全重置多語言支持
+
+## v1.7.09
+1. Add: Development Version Check | 增加開發版本檢查
+2. Remove: Github Trial Reset | 移除 Github 試用重置
+3. Fixed: Some Issues | 修復一些問題
+
 ## v1.7.08
 1. Add: Google OAuth Authentication | 增加 Google OAuth 認證
 2. Add: GitHub OAuth Authentication | 增加 GitHub OAuth 認證
