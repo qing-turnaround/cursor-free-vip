@@ -228,6 +228,7 @@ def print_menu():
     """Print menu options"""
     print(f"\n{Fore.CYAN}{EMOJI['MENU']} {translator.get('menu.title')}:{Style.RESET_ALL}")
     print(f"{Fore.YELLOW}{'─' * 40}{Style.RESET_ALL}")
+    print(f"{Fore.GREEN}-1{Style.RESET_ALL}. {EMOJI['SUCCESS']} {translator.get('menu.auto_register', default='自动循环注册 Cursor 账号')}")
     print(f"{Fore.GREEN}0{Style.RESET_ALL}. {EMOJI['ERROR']} {translator.get('menu.exit')}")
     print(f"{Fore.GREEN}1{Style.RESET_ALL}. {EMOJI['RESET']} {translator.get('menu.reset')}")
     print(f"{Fore.GREEN}2{Style.RESET_ALL}. {EMOJI['SUCCESS']} {translator.get('menu.register')}")
@@ -240,7 +241,6 @@ def print_menu():
     print(f"{Fore.GREEN}7{Style.RESET_ALL}. {EMOJI['LANG']} {translator.get('menu.select_language')}")
     print(f"{Fore.GREEN}8{Style.RESET_ALL}. {EMOJI['UPDATE']} {translator.get('menu.disable_auto_update')}")
     print(f"{Fore.GREEN}9{Style.RESET_ALL}. {EMOJI['RESET']} {translator.get('menu.totally_reset')}")
-    print(f"{Fore.GREEN}10{Style.RESET_ALL}. {EMOJI['SUCCESS']} {translator.get('menu.auto_register', default='自动循环注册 Cursor 账号')}")
     print(f"{Fore.YELLOW}{'─' * 40}{Style.RESET_ALL}")
 
 def select_language():
@@ -494,25 +494,6 @@ def main():
                 import disable_auto_update
                 disable_auto_update.run(translator)
                 print_menu()
-            elif choice == "9":
-                # 无限循环执行注册操作
-                import cursor_register
-                try:
-                    print(f"\n{Fore.CYAN}{EMOJI['INFO']} {translator.get('menu.auto_register_start', default='开始自动循环注册 Cursor 账号')}{Style.RESET_ALL}")
-                    print(f"{Fore.YELLOW}{'─' * 40}{Style.RESET_ALL}")
-                    print(f"{Fore.YELLOW}{EMOJI['INFO']} {translator.get('menu.auto_register_tip', default='按 Ctrl+C 停止循环注册')}{Style.RESET_ALL}")
-                    
-                    count = 0
-                    while True:
-                        count += 1
-                        print(f"\n{Fore.CYAN}{EMOJI['INFO']} {translator.get('menu.auto_register_count', default='第 {count} 次注册', count=count)}{Style.RESET_ALL}")
-                        cursor_register.main(translator, auto_mode=True)  # 使用自动模式，跳过等待用户按回车键
-                        print(f"{Fore.GREEN}{EMOJI['SUCCESS']} {translator.get('menu.auto_register_completed', default='第 {count} 次注册完成', count=count)}{Style.RESET_ALL}")
-                        print(f"{Fore.YELLOW}{'─' * 40}{Style.RESET_ALL}")
-                except KeyboardInterrupt:
-                    print(f"\n{Fore.YELLOW}{EMOJI['INFO']} {translator.get('menu.auto_register_stopped', default='自动循环注册已停止')}{Style.RESET_ALL}")
-                finally:
-                    print_menu()
             elif choice == "9":
                 import totally_reset_cursor
                 totally_reset_cursor.run(translator)
